@@ -10,7 +10,6 @@ contract AdminFunctions
     mapping (address => bool) private AddedAccounts;
     mapping (address => UserRegistration) private _Accounts;
     mapping (uint => InvestmentGroup) private _Groups;
-    //mapping (address => UserInvestment) private _UserInvestments;
     mapping (address => mapping(uint=>UserInvestment)) private _UserInvestments;
     uint private TotalGroupsAdded;
 
@@ -76,11 +75,10 @@ contract AdminFunctions
         if(containsAllowedUser(_Address) && !checkIfUserExists(_Address))
         {
             _Accounts[_Address].name = _name;
-            //_Accounts[_Address].wallet = _wallet;
             _Accounts[_Address].IsActive = true;
             _Accounts[_Address].TotalInvestment = 0;
             
-           emit UserCreation(_Address,_name);
+           emit UserCreation(_Address,_name); // in previous versions of web3 i.e, <1.0, it was used in the callbacks
         }
     }
     
@@ -122,7 +120,6 @@ contract AdminFunctions
                 _UserInvestments[msg.sender][_Groups[i].GroupID].GroupID = _Groups[i].GroupID;
                 _UserInvestments[msg.sender][_Groups[i].GroupID].UserAccount = msg.sender;
                 _UserInvestments[msg.sender][_Groups[i].GroupID].TotalInvestmentMade = tempInvest;
-                //_Accounts[msg.sender].wallet-=tempInvest;
             }
             require(sherry.transfer(msg.sender, 10**uint(18)));
         
@@ -134,14 +131,6 @@ contract AdminFunctions
         return false;
          
     }
-    
-    // function RequestToCheckBalance() internal view returns(uint)
-    // {
-        
-    //         return _Accounts[msg.sender].wallet;
-        
-         
-    // }
     
     function RequestToCheckInvestments(uint _GroupID) internal view returns(uint)
     {
@@ -170,15 +159,10 @@ contract AdminFunctions
         if(_Groups[_GroupID].Active)
             return true;
         else
-            return false;
-        
-    }
-    
-    // function stringcheck (string _base) returns (string){
-    //     return (_base.Concat(" Pro"));
-    // }
-    
+            return false;      
+    } 
 }
+
 contract UserFuntions is AdminFunctions {
     
     function EditUser(string _Name) public returns (string)
@@ -201,13 +185,6 @@ contract UserFuntions is AdminFunctions {
             return RequestToMakeInvestment(_money);
         }
     }
-    
-    // function CheckBalance() public view returns(uint){
-    //     if(checkIfUserExists(msg.sender))
-    //     {
-    //       return RequestToCheckBalance();
-    //     }
-    // }
     
     function CheckInvestments(uint _GroupID) public view returns(uint){
         if(checkIfUserExists(msg.sender))
