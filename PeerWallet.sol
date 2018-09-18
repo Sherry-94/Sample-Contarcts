@@ -21,7 +21,7 @@ contract AdminFunctions
     
     
     
-    function AdminFunctions() public
+    constructor() public
     {
         
         creater = msg.sender;
