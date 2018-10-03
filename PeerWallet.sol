@@ -3,8 +3,7 @@ pragma solidity ^0.4.2;
 import "browser/SherryToken.sol";
 contract AdminFunctions 
 {
-    //using Strings for string;
-    
+    //using Strings for string;    
     SherryToken sherry = SherryToken(0x3f1e403af1f89c7a66dbe0513d9ae9f3b337aaa1); // deployed contract instantiating/ Ropsten  
     address private creater;
     uint private MarketCapital;
