@@ -37,8 +37,6 @@ contract AdminFunctions
     struct UserRegistration
     {
         string name;
-        //address account;
-        //uint wallet;
         uint TotalInvestment;
         bool IsActive; //will be implemented if deemed necessary
         
