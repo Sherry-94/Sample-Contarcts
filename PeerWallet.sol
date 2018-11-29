@@ -4,7 +4,13 @@ import "browser/SherryToken.sol";
 contract AdminFunctions 
 {
     //using Strings for string;    
-    SherryToken sherry = SherryToken(0x3f1e403af1f89c7a66dbe0513d9ae9f3b337aaa1); // deployed contract instantiating/ Ropsten  
+    
+    // deployed Contract/Token instantiating/ Ropsten
+    SherryToken sherry = SherryToken(0x3f1e403af1f89c7a66dbe0513d9ae9f3b337aaa1);   
+    
+    
+    // instantiating variables
+    
     address private creater;
     uint private MarketCapital;
     mapping (address => bool) private AddedAccounts;
@@ -58,15 +64,22 @@ contract AdminFunctions
         uint TotalInvestmentMade;
         
     }
-
+    
+    //Only an owner can add a user to a to AddedAccounts 
+    //AddedAccounts is a list/map for which every record/account is an eligible account for user creation
+    
     function setAllowedUsers(address AccountAddress) external ContractOwner returns(bool) {
         AddedAccounts[AccountAddress]=true;
         return true;
     }
-
+    
+    // Eligibility Check
+    
     function containsAllowedUser(address AccountAddress) public view returns (bool){
         return AddedAccounts[AccountAddress];
     }
+    
+    // User Creation function, which currently only a contract owner can call
     
     function createUser(address _Address, string _name) public ContractOwner
     {
@@ -92,21 +105,28 @@ contract AdminFunctions
 
     }
     
+    // Checking if user already exists or not
+    
     function checkIfUserExists(address _Address) public view returns(bool)
     {
         return _Accounts[_Address].IsActive;
         
     }
     
+    // Removing eligibility
     
     function RemoveAccount(address _Address) external ContractOwner {
         AddedAccounts[_Address]=false;
     }
     
+    
+    
     function RequestToChangeUserDetails(string _Name) internal
     {
         _Accounts[msg.sender].name = _Name;   
     }
+    
+    
     
      function RequestToMakeInvestment(uint _money) internal returns(bool)
     {
@@ -119,7 +139,8 @@ contract AdminFunctions
                 _UserInvestments[msg.sender][_Groups[i].GroupID].UserAccount = msg.sender;
                 _UserInvestments[msg.sender][_Groups[i].GroupID].TotalInvestmentMade = tempInvest;
             }
-            require(sherry.transfer(msg.sender, 10**uint(18)));
+            
+            require(sherry.transfer(msg.sender, 10**uint(18))); // only for testing
         
             return true;
             
@@ -130,12 +151,11 @@ contract AdminFunctions
          
     }
     
+    
+    
     function RequestToCheckInvestments(uint _GroupID) internal view returns(uint)
-    {
-        
-            return (_UserInvestments[msg.sender][_GroupID].TotalInvestmentMade);
-        
-         
+    {      
+        return (_UserInvestments[msg.sender][_GroupID].TotalInvestmentMade);       
     }
     
     function SetGroup(uint _GroupID, string _GroupName, uint _Percentage) external ContractOwner
