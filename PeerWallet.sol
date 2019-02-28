@@ -89,7 +89,7 @@ contract AdminFunctions
             _Accounts[_Address].IsActive = true;
             _Accounts[_Address].TotalInvestment = 0;
             
-           emit UserCreation(_Address,_name); // in previous versions of web3 i.e, <1.0, it was used in the callbacks
+           emit UserCreation(_Address,_name); 
         }
     }
     
